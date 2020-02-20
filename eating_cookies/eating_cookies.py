@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 import sys
 
 # The cache parameter is here for if you want to implement
@@ -10,7 +9,6 @@ import sys
 # Permutaion: n P r   ==> n!/(n-r)!
 
 # x - n  =
-
 
 # case 3 - 4 dif: 1
 # 1 1 1
@@ -46,30 +44,47 @@ import sys
 # 1 3 1 1
 # 1 1 3 1
 # 1 1 1 3
-count = 0
 
 
 def eating_cookies(n, cache=None):
-    global count
+
     if n == 0:
-        count += 1
         return 1
     if n < 0:
         return 0
+    elif cache and cache[n] > 0:
+        return cache
+    else:
+        if cache == None:
+            cache = {}
+        # suppose n = 3, then:
+        #       e.c(0)->(returns 1) + e.c(1)->(returns 1) + e.c(2)->(returns 2)   --> value = 4
+        value = eating_cookies(n-3) + eating_cookies(n-2) + eating_cookies(n-1)
+        # cache{3: 4}
+        cache[n] = value
+        return value
 
-    # eat three see what happens n - 3
-    eating_cookies(n-3)
 
-    # eat two see what happnes n - 2
-    eating_cookies(n-2)
+print(eating_cookies(5, {}))
 
-    # eat one see what happens n - 1
-    eating_cookies(n-1)
+"""
+def eating_cookies(n, cache=None):
+    if n < 0:
+        return 0
+    if n == 0:
+        return 1
+    elif cache and cache[n] > 0:
+        return cache[n]
+    else:
+        if cache is None:
+            cache = {}
+        value = eating_cookies(
+            n - 1, cache) + eating_cookies(n - 2, cache) + eating_cookies(n - 3, cache)
+        cache[n] = value
+        return value
 
-    return count
+"""
 
-
-print(eating_cookies(1))
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
