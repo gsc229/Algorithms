@@ -53,19 +53,20 @@ def eating_cookies(n, cache=None):
     if n < 0:
         return 0
     elif cache and cache[n] > 0:
-        return cache
+        return cache[n]
     else:
-        if cache == None:
-            cache = {}
+        if cache is None:
+            cache = [0] * (n + 1)
         # suppose n = 3, then:
         #       e.c(0)->(returns 1) + e.c(1)->(returns 1) + e.c(2)->(returns 2)   --> value = 4
-        value = eating_cookies(n-3) + eating_cookies(n-2) + eating_cookies(n-1)
+        value = eating_cookies(
+            n-3, cache) + eating_cookies(n-2, cache) + eating_cookies(n-1, cache)
         # cache{3: 4}
         cache[n] = value
         return value
 
 
-print(eating_cookies(5, {}))
+print(eating_cookies(10000))
 
 """
 def eating_cookies(n, cache=None):
